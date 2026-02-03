@@ -1,1 +1,3 @@
-// Booking entity - will be defined as Prisma model in schema.prisma
+export const Booking = (id: string, roomId: string, customerName: string, customerPhone: string, checkInDate: string, checkOutDate: string) => ({
+    id, roomId, customerName, customerPhone, checkInDate, checkOutDate
+});

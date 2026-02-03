@@ -1,1 +1,3 @@
-// Room entity - will be defined as Prisma model in schema.prisma
+export const Room = (id: string, type: string, price: number, availabilityStatus: boolean) => ({
+    id, type, price, availabilityStatus
+});
