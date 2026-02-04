@@ -12,7 +12,27 @@ export const RoomRepository = () => {
         });
     }
 
+    const getAvailableRooms = async (params: { checkIn: Date, checkOut: Date, capacity: number }) => {
+        const { checkIn, checkOut, capacity } = params;
+        return await prisma.room.findMany({
+            where: {
+                ...(capacity ? { capacity: { gte: capacity } } : {}),
+                bookings: {
+                    none: {
+                        checkIn: { lt: checkOut },
+                        checkOut: { gt: checkIn },
+                        status: "CONFIRMED",
+                    },
+                },
+            },
+
+            orderBy: { roomNumber: 'asc' }
+
+        })
+    }
+
     return {
-        getAllRooms
+        getAllRooms,
+        getAvailableRooms
     }
 }

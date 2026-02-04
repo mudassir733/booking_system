@@ -25,17 +25,17 @@ model Room {
 }
 
 model Booking {
-  id         Int      @id @default(autoincrement())
-  roomId     Int
-  guestName  String
-  guestEmail String
-  guestPhone String
-  checkIn    DateTime
-  checkOut   DateTime
-  totalPrice Float
-  status     String   @default("pending")
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id            Int      @id @default(autoincrement())
+  roomId        Int
+  customerName  String
+  customerEmail String
+  customerPhone String
+  checkIn       DateTime
+  checkOut      DateTime
+  totalPrice    Float
+  status        String   @default("pending")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   room Room @relation(fields: [roomId], references: [id])
 
