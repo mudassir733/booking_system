@@ -4,6 +4,8 @@ import { BookingRepository } from "../repositories/booking.repository";
 import { ApiErrorFactory } from "../utils/errorHandler";
 import type { CreateBookingInput } from "../validation/booking.validation";
 
+
+
 export const BookingService = () => {
     const createBooking = async (input: CreateBookingInput) => {
         const checkIn = new Date(input.checkIn);

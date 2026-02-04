@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { BookingService } from "../services/booking.service";
 import { createBookingSchema } from "../validation/booking.validation";
 import { sendErrorResponse, sendSuccessResponse } from "../utils/apiResponse";
+import { ApiError } from "../utils/errorHandler";
 import { ZodError } from "zod";
 
 export const BookingController = () => {
@@ -14,6 +15,9 @@ export const BookingController = () => {
         } catch (error: any) {
             if (error instanceof ZodError) {
                 return sendErrorResponse(res, 422, 'Validation error', error.message)
+            }
+            if (error instanceof ApiError) {
+                return sendErrorResponse(res, error.statusCode, 'Conflict', error.message)
             }
             return sendErrorResponse(res, 500, 'Internal server error', error.message)
         }

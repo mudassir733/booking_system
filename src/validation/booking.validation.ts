@@ -12,7 +12,7 @@ export const createBookingSchema = z
         checkIn: z.string().datetime(),
         checkOut: z.string().datetime(),
         totalPrice: z.number().positive(),
-        status: z.enum(["PENDING", "CONFIRMED", "CANCELLED", "COMPLETED"]),
+        status: z.enum(["CONFIRMED", "CANCELLED"]).default("CONFIRMED"),
     })
     .refine((data) => new Date(data.checkIn) < new Date(data.checkOut), {
         message: "checkIn must be before checkOut",
