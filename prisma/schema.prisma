@@ -42,3 +42,13 @@ model Booking {
   @@index([roomId])
   @@index([checkIn, checkOut])
 }
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  actorId   String
+  actorRole String
+  action    String
+  entityId  String?
+  meta      Json?
+  createdAt DateTime @default(now())
+}
