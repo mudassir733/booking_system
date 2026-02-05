@@ -9,6 +9,32 @@ datasource db {
   provider = "postgresql"
 }
 
+enum UserRole {
+  CUSTOMER
+  CSR
+  ADMIN
+}
+
+model User {
+  id           String   @id @default(uuid())
+  fullName     String
+  email        String   @unique
+  phone        String?
+  passwordHash String
+  role         UserRole @default(CSR)
+  isActive     Boolean  @default(true)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  lastLoginAt DateTime?
+
+  // Relations
+  bookings Booking[]
+
+  @@index([role])
+  @@index([isActive])
+}
+
 model Room {
   id            Int      @id @default(autoincrement())
   roomNumber    String   @unique
@@ -37,7 +63,9 @@ model Booking {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  room Room @relation(fields: [roomId], references: [id])
+  room      Room    @relation(fields: [roomId], references: [id])
+  createdBy User?   @relation(fields: [userId], references: [id])
+  userId    String?
 
   @@index([roomId])
   @@index([checkIn, checkOut])
