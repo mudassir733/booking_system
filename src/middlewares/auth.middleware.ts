@@ -13,7 +13,7 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
     const header = req.headers.authorization;
 
     if (!header?.startsWith("Bearer ")) {
-        return sendErrorResponse(res, 401, "Unauthorized", "Unauthorized");
+        return sendErrorResponse(res, 401, "Unauthorized", "Unauthorized - Missing or invalid token");
     }
 
     const token = header.slice("Bearer ".length);
@@ -23,6 +23,6 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
         req.user = payload;
         return next();
     } catch (error) {
-        return sendErrorResponse(res, 401, "Unauthorized", "Unauthorized");
+        return sendErrorResponse(res, 401, "Unauthorized", "Unauthorized - Invalid token");
     }
 }

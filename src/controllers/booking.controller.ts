@@ -9,8 +9,16 @@ import { ZodError } from "zod";
 export const BookingController = () => {
     const createBooking = async (req: Request, res: Response) => {
         try {
+            const user = req.user;
+            if (!user) {
+                return sendErrorResponse(res, 401, 'Unauthorized', 'Unauthorized');
+            }
+
             const input = createBookingSchema.parse(req.body);
-            const booking = await BookingService().createBooking(input);
+            const booking = await BookingService().createBooking({
+                ...input,
+                userId: user.id,
+            });
             return sendSuccessResponse(res, 201, booking, 'Booking created successfully')
         } catch (error: any) {
             if (error instanceof ZodError) {

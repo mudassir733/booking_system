@@ -1,13 +1,14 @@
 // Booking service - contains business logic for booking operations
 import prisma from "../database/db";
-import { BookingRepository } from "../repositories/booking.repository";
 import { ApiErrorFactory } from "../utils/errorHandler";
 import type { CreateBookingInput } from "../validation/booking.validation";
 
 
 
+type CreateBookingInputWithUser = CreateBookingInput & { userId?: string };
+
 export const BookingService = () => {
-    const createBooking = async (input: CreateBookingInput) => {
+    const createBooking = async (input: CreateBookingInputWithUser) => {
         const checkIn = new Date(input.checkIn);
         const checkOut = new Date(input.checkOut);
 
@@ -36,7 +37,8 @@ export const BookingService = () => {
                     checkIn,
                     checkOut,
                     totalPrice: input.totalPrice,
-                    status: input.status
+                    status: input.status,
+                    userId: input.userId ?? null
                 }
             });
             return booking;

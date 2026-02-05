@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { RoomService } from "../services/room.service";
 import { sendErrorResponse, sendSuccessResponse } from "../utils/apiResponse";
 
+
 export const RoomController = () => {
     // fetch all rooms
     const getAllRooms = async (req: Request, res: Response) => {
