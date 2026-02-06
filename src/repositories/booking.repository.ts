@@ -21,12 +21,14 @@ export const BookingRepository = () => {
 
     const createBooking = async (params: { roomId: number, customerName: string, customerEmail: string, customerPhone: string, checkIn: Date, checkOut: Date, totalPrice: number, status: string }) => {
         // const { roomId, customerName, customerEmail, customerPhone, checkIn, checkOut, totalPrice, status } = params;
-        return await prisma.booking.create({
+        const booking = await prisma.booking.create({
             data: {
                 ...params,
                 status: 'CONFIRMED'
             }
         })
+
+        return booking;
     }
 
     return {

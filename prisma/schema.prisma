@@ -35,17 +35,27 @@ model User {
   @@index([isActive])
 }
 
+enum RoomStatus {
+  AVAILABLE
+  OCCUPIED
+  CLEANING
+  OUT_OF_ORDER
+}
+
 model Room {
-  id            Int      @id @default(autoincrement())
-  roomNumber    String   @unique
+  id            Int        @id @default(autoincrement())
+  roomNumber    String     @unique
   type          String
   capacity      Int
   pricePerNight Float
+  floor         Int?
+  status        RoomStatus @default(AVAILABLE)
   description   String?
   amenities     String[]
-  isAvailable   Boolean  @default(true)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  isAvailable   Boolean    @default(true)
+  lastCleanedAt DateTime?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
 
   bookings Booking[]
 }
