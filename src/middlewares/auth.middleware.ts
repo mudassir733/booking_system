@@ -1,7 +1,7 @@
 // Authentication middleware
 import { NextFunction, Request, Response } from "express";
 import { sendErrorResponse } from "../utils/apiResponse";
-import jwt from "jsonwebtoken";
+import { verifyAccessToken } from "../utils/jwt";
 
 
 export type AuthUser = {
@@ -19,8 +19,11 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
     const token = header.slice("Bearer ".length);
 
     try {
-        const payload = jwt.verify(token, process.env.JWT_SECRET as string) as AuthUser;
-        req.user = payload;
+        const payload = verifyAccessToken(token);
+        if (payload.type !== "access") {
+            return sendErrorResponse(res, 401, "Unauthorized", "Unauthorized - Invalid token");
+        }
+        req.user = { id: payload.sub, role: payload.role };
         return next();
     } catch (error) {
         return sendErrorResponse(res, 401, "Unauthorized", "Unauthorized - Invalid token");

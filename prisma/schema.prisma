@@ -30,6 +30,7 @@ model User {
 
   // Relations
   bookings Booking[]
+  refreshTokens RefreshToken[]
 
   @@index([role])
   @@index([isActive])
@@ -89,4 +90,18 @@ model AuditLog {
   entityId  String?
   meta      Json?
   createdAt DateTime @default(now())
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([expiresAt])
 }
